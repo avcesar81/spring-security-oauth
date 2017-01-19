@@ -1,29 +1,23 @@
 package org.baeldung.config;
 
-import java.io.IOException;
+import javax.sql.DataSource;
 
-import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
+import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.oauth2.config.annotation.web.configuration.EnableResourceServer;
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.DefaultTokenServices;
+import org.springframework.security.oauth2.provider.token.RemoteTokenServices;
 import org.springframework.security.oauth2.provider.token.TokenStore;
-import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
-import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
-import org.springframework.jdbc.datasource.init.*;
-import org.springframework.jdbc.datasource.*;
-import javax.sql.DataSource;
 
 @Configuration
 @PropertySource({ "classpath:persistence.properties" })
@@ -56,17 +50,17 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     }
 
     // Remote token service
-    /*
+    
     @Primary
     @Bean
-    public RemoteTokenServices tokenService() {
+    public RemoteTokenServices tokenServices() {
         final RemoteTokenServices tokenService = new RemoteTokenServices();
         tokenService.setCheckTokenEndpointUrl("http://localhost:8081/spring-security-oauth-server/oauth/check_token");
         tokenService.setClientId("fooClientIdPassword");
         tokenService.setClientSecret("secret");
         return tokenService;
     }
-    */
+    
 
     // JWT token store
 
@@ -96,13 +90,13 @@ public class OAuth2ResourceServerConfig extends ResourceServerConfigurerAdapter 
     return converter;
     }
     */
-    @Bean
-    @Primary
-    public DefaultTokenServices tokenServices() {
-        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-        defaultTokenServices.setTokenStore(tokenStore());
-        return defaultTokenServices;
-    }
+//    @Bean
+//    @Primary
+//    public DefaultTokenServices tokenServices() {
+//        final DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
+//        defaultTokenServices.setTokenStore(tokenStore());
+//        return defaultTokenServices;
+//    }
 
     // JDBC token store configuration
 
